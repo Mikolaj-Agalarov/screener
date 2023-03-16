@@ -1,5 +1,5 @@
 CREATE TABLE USER_ROLES
-(
+    https://github.com/Mikolaj-Agalarov/screener(
     user_id INTEGER,
     role_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES USERS (id),
