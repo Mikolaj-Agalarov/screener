@@ -45,7 +45,6 @@ public class NotificationService {
                 notification.setIsAsk(false);
                 notification.setIsBid(true);
             }
-            System.out.println("code executed here ");
 
             try {
                 notificationRepository.save(notification);

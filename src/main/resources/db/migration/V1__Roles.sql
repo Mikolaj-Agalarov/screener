@@ -1,8 +1,8 @@
 CREATE TABLE ROLES
 (
-    id SERIAL PRIMARY KEY NOT NULL UNIQUE,
-    Name CHARACTER VARYING (55) NOT NULL UNIQUE
+    id bigserial not null unique primary key,
+    role varchar not null unique
 );
 
-INSERT INTO ROLES (id, Name) VALUES (1, 'admin');
-INSERT INTO ROLES (id, Name) VALUES (2, 'user');
+INSERT INTO ROLES (role) VALUES ('ROLE_ADMIN');
+INSERT INTO ROLES (role) VALUES ('ROLE_USER');

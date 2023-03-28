@@ -9,4 +9,3 @@ CREATE TABLE USER_ROLES
 );
 
 INSERT INTO USER_ROLES (user_id, role_id) VALUES (1, 1);
-INSERT INTO USER_ROLES (user_id, role_id) VALUES (2, 2);

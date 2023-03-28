@@ -1,12 +1,15 @@
 package cryptoDOM.service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cryptoDOM.entity.TickerName;
 import cryptoDOM.repository.TickerNameRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -89,29 +92,22 @@ public class TickerNameService {
         }
         executor.shutdown();
         while (!executor.isTerminated()) {
-            // wait for all tasks to finish
         }
     }
 
 
+    public JsonArray pullTickers() {
+        RestTemplate restTemplate = new RestTemplate();
 
-    public void deleteAll () {
-        tickerNameRepository.deleteAll();
+        Gson gson = new Gson();
+        String url = "https://openapi-v2.kucoin.com/api/v1/market/allTickers";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String json = response.getBody();
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        JsonObject data = jsonObject.get("data").getAsJsonObject();
+        JsonArray tickers = data.get("ticker").getAsJsonArray();
+
+        return tickers;
     }
 
-    public List<TickerName> getAll () {
-        return tickerNameRepository.findAll();
-    }
-
-    public TickerName findByTickerName(String tickerName) {
-       return tickerNameRepository.findBy(tickerName);
-    }
-
-    public List<TickerName> getAllTickerNames() {
-        return tickerNameRepository.findAll();
-    }
-
-    public List<TickerName> findByIsOnTrue() {
-        return tickerNameRepository.findByIsOnTrue();
-    }
 }

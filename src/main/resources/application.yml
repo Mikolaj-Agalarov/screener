@@ -19,6 +19,9 @@ management:
       exposure:
         include: '*'
 
+jwt:
+  secret: "SECRET"
+
 logging:
   level:
     org:

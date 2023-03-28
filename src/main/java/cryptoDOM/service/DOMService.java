@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.RestTemplate;
 
-
-import java.time.LocalTime;
 import java.util.List;
-
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -29,13 +26,10 @@ import java.util.concurrent.Executors;
 public class DOMService {
     @Autowired
     private TickerNameRepository tickerNameRepository;
-
     @Autowired
     private DOMRepository domRepository;
-
     @Autowired
     private AskService askService;
-
     @Autowired
     private BidService bidService;
 
@@ -50,7 +44,8 @@ public class DOMService {
         List<TickerName> tickerNames = tickerNameRepository.findByIsOnTrue();
 
         for (TickerName tickerName : tickerNames) {
-            String url = "https://openapi-v2.kucoin.com/api/v1/market/orderbook/level2_100?symbol=" + tickerName.getTickerName();
+            String url = "https://openapi-v2.kucoin.com/api/v1/market/orderbook/level2_100?symbol="
+                    + tickerName.getTickerName();
 
             Callable<Void> task = () -> {
                 ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
@@ -96,22 +91,12 @@ public class DOMService {
                 return null;
             };
 
-            executorService.submit(task); // submit the task to the executor
+            executorService.submit(task);
 
         }
 
     }
 
-    public List<DOM> getAllDOMs() {
-        return domRepository.findAll();
-    }
-
-    public void deleteAll() {
-        domRepository.deleteAll();
-    }
-    public List<DOM> getDOMsWithAsksOrBids() {
-        return domRepository.findByAsksIsNotNullOrBidsIsNotNull();
-    }
 
     public Optional<DOM> getDomById(Long id) {
         return domRepository.findById(id);

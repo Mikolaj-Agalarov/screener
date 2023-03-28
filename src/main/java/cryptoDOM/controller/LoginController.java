@@ -1,5 +1,6 @@
 package cryptoDOM.controller;
 
+import cryptoDOM.configuration.jwt.Jwt;
 import cryptoDOM.entity.User;
 import cryptoDOM.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/user")
@@ -19,30 +24,30 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Jwt jwt;
+
     @GetMapping("/login")
-    public String login(Model model) {
+    public String sendLoginForm(Model model) {
         model.addAttribute("user", new User());
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("user") User user, Model model, HttpServletRequest request) {
-        try {
-            User authenticatedUser = userService.authenticateUser(user.getUsername(), user.getPassword());
-            if(authenticatedUser != null) {
-                request.getSession().setAttribute("user", authenticatedUser);
-                return "redirect:/api/showData";
-            } else {
-                model.addAttribute("error", "Invalid username or password");
-                return "login";
-            }
-        } catch(AuthenticationException e) {
-            model.addAttribute("error", e.getMessage());
-            return "login";
-        } catch(Exception e) {
-            model.addAttribute("error", "Invalid username or password");
-            return "login";
-        }
-    }
+    public String login(@ModelAttribute("user") User userEntity, HttpServletResponse response) throws AuthenticationException {
+        Optional<User> user = userService.getByUsernameAndPassword(userEntity);
+        if (user.isPresent()) {
+            final String token = jwt.generateToken(user.get().getUsername());
+            final Cookie cookie = new Cookie("Authorization", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge((int) Duration.ofHours(3).toSeconds());
 
+            final Cookie cookieRole = new Cookie("myRole", user.get().getRole().getRole());
+            response.addCookie(cookieRole);
+
+            response.addCookie(cookie);
+        }
+        return "redirect:/api/showData";
+    }
 }
