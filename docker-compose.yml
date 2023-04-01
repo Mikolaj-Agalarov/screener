@@ -1,0 +1,12 @@
+version: '3'
+services:
+  db:
+    image: postgres
+#    volumes: /bla
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: screener
+    ports:
+      - "5432:5432"
