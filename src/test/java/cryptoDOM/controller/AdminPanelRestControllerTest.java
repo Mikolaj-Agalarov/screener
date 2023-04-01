@@ -20,9 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @EnableConfigurationProperties
 @RunWith(SpringRunner.class)
-@EnableAutoConfiguration
 @SpringBootTest
-class AdminPanelRestControllerTest {
+public class AdminPanelRestControllerTest {
 
     @Autowired
     private AdminPanelRestController adminPanelRestController;
