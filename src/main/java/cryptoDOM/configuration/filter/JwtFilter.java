@@ -26,10 +26,10 @@ import java.util.Arrays;
 public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    @Autowired
-    private Jwt jwtProvider;
+
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private final Jwt jwtProvider;
 
     private String getTokenFromRequest(HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();

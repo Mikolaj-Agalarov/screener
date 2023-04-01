@@ -36,11 +36,12 @@ public class UserService {
     }
 
     public boolean saveUser(User user) {
-        Role userRole = roleService.getByRole("ROLE_USER");
-        user.setRole(userRole);
-        user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
+        return false;
+//        Role userRole = roleService.getByRole("ROLE_USER");
+//        user.setRole(userRole);
+//        user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
+//        userRepository.save(user);
+//        return true;
     }
 
     public Optional<User> getByUsernameAndPassword(User user) throws AuthenticationException {

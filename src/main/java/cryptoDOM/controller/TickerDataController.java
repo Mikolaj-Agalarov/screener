@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import cryptoDOM.entity.Ask;
 import cryptoDOM.entity.Bid;
 import cryptoDOM.entity.DOM;
-import cryptoDOM.entity.TickerName;
 
 import cryptoDOM.service.AskService;
 import cryptoDOM.service.BidService;
@@ -22,19 +21,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/api")
-public class TickerDataRestController {
+public class TickerDataController {
     private final TickerNameService tickerNameService;
     private final AskService askService;
     private final BidService bidService;
     private final DOMService domService;
 
-    public TickerDataRestController(TickerNameService tickerNameService, AskService askService, BidService bidService, DOMService domServiced) {
+    public TickerDataController(TickerNameService tickerNameService, AskService askService, BidService bidService, DOMService domServiced) {
         this.tickerNameService = tickerNameService;
         this.askService = askService;
         this.bidService = bidService;
