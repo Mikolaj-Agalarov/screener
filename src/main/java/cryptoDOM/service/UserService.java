@@ -36,12 +36,16 @@ public class UserService {
     }
 
     public boolean saveUser(User user) {
-        return false;
-//        Role userRole = roleService.getByRole("ROLE_USER");
-//        user.setRole(userRole);
-//        user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
-//        userRepository.save(user);
-//        return true;
+        Optional<User> isUsernameFree = userRepository.getUserByUsername(user.getUsername());
+        if (isUsernameFree.isPresent()) {
+            return false;
+        } else {
+            Role userRole = roleService.getByRole("ROLE_USER");
+            user.setRole(userRole);
+            user.setPassword(passwordConfig.passwordEncoder().encode(user.getPassword()));
+            userRepository.save(user);
+            return true;
+        }
     }
 
     public Optional<User> getByUsernameAndPassword(User user) throws AuthenticationException {
@@ -59,6 +63,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public void deleteUser(String username) {
+        userRepository.deleteByUsername(username);
     }
 
 /*    public Optional<User> getByUsername(String username) {
