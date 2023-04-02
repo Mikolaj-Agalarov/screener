@@ -1,24 +1,22 @@
 package cryptoDOM.service;
 
-import cryptoDOM.configuration.PasswordConfig;
-import cryptoDOM.dto.UserDTO;
 import cryptoDOM.entity.Role;
 import cryptoDOM.entity.User;
-import cryptoDOM.mapper.UserMapper;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.MutablePropertyValues;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import cryptoDOM.repository.UserRepository;
 
 import javax.naming.AuthenticationException;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     private final RoleService roleService;
 

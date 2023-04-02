@@ -51,7 +51,6 @@ public class AdminPanelRestControllerTest {
 
     @Test
     public void testGetAllUsers() throws Exception {
-        // Create some test data
         User user1 = new User();
         user1.setId(1L);
         user1.setUsername("testuser1");
