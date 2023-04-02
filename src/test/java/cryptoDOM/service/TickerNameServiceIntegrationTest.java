@@ -13,9 +13,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import org.springframework.transaction.annotation.Transactional;
+
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,7 +31,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-public class TickerNameServiceIntegrationTest {
+@Testcontainers
+public class TickerNameServiceIntegrationTest extends AbstractIntegrationScreenerTest {
 
     @Autowired
     private TickerNameRepository tickerNameRepository;
@@ -43,13 +47,13 @@ public class TickerNameServiceIntegrationTest {
         JsonObject btc = new JsonObject();
 
         while (!found)
-        for(JsonElement ticker:tickers) {
-            String tickerName = ticker.getAsJsonObject().get("symbol").getAsString();
-            if (tickerName.contains("BTC-USDT")) {
-                btc = ticker.getAsJsonObject();
-                found = true;
+            for(JsonElement ticker:tickers) {
+                String tickerName = ticker.getAsJsonObject().get("symbol").getAsString();
+                if (tickerName.contains("BTC-USDT")) {
+                    btc = ticker.getAsJsonObject();
+                    found = true;
+                }
             }
-        }
 
         tickerNameService.updateDB(tickers);
 
@@ -63,4 +67,5 @@ public class TickerNameServiceIntegrationTest {
         assertThat(savedTickerName.getVolValue().setScale(0, RoundingMode.DOWN))
                 .isEqualTo(new BigDecimal(btc.get("volValue").getAsString()).setScale(0, RoundingMode.DOWN));
     }
+
 }
