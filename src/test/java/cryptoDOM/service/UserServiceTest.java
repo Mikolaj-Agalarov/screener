@@ -10,11 +10,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,28 +27,25 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.Optional;
 
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = UserService.class)
-@WebAppConfiguration
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-    @Autowired
+    @InjectMocks
     private UserService userService;
 
-    @MockBean
+    @Mock
     private UserRepository userRepository;
 
-    @MockBean
+    @Mock
     private RoleService roleService;
 
-    @MockBean
-    private PasswordConfig passwordConfig;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
 
     @Test
     void testSaveUser() {
         User user = new User();
-        Role role = new Role();
-        role.setRole("ROLE_USER");
+        Role role = new Role("ROLE_USER");
         user.setUsername("new");
         user.setPassword("user");
         user.setEmail("newuser@gmail.com");
@@ -55,7 +56,7 @@ public class UserServiceTest {
         Mockito.when(roleService.getByRole("ROLE_USER"))
                 .thenReturn(role);
 
-        Mockito.when(passwordConfig.passwordEncoder().encode(user.getPassword()))
+        Mockito.when(passwordEncoder.encode(user.getPassword()))
                 .thenReturn("encodedPassword");
 
         boolean result = userService.saveUser(user);
