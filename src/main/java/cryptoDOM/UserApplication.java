@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 @SpringBootApplication
 @EnableScheduling
 public class UserApplication {
-    private static final String TICKER_DATA_API_URL = "https://openapi-v2.kucoin.com/api/v1/market/allTickers";
 
 //    @Bean
 //    public Flyway flyway(DataSource dataSource) {
