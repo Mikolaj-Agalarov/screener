@@ -21,12 +21,22 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 public class TickerNameService {
     private final TickerNameRepository tickerNameRepository;
-
-    public List<TickerName> getAllActiveTickers() {
-        return tickerNameRepository.findByIsOnTrue();
-    }
     public TickerName findtickerByTickername(String tickerName) {
         return tickerNameRepository.findBy(tickerName);
+    }
+
+    public JsonArray pullTickers() {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Gson gson = new Gson();
+        String url = "https://openapi-v2.kucoin.com/api/v1/market/allTickers";
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        String json = response.getBody();
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+        JsonObject data = jsonObject.get("data").getAsJsonObject();
+        JsonArray tickers = data.get("ticker").getAsJsonArray();
+
+        return tickers;
     }
 
     public void updateDB(JsonArray tickers) {
@@ -93,21 +103,6 @@ public class TickerNameService {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-    }
-
-
-    public JsonArray pullTickers() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        Gson gson = new Gson();
-        String url = "https://openapi-v2.kucoin.com/api/v1/market/allTickers";
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        String json = response.getBody();
-        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-        JsonObject data = jsonObject.get("data").getAsJsonObject();
-        JsonArray tickers = data.get("ticker").getAsJsonArray();
-
-        return tickers;
     }
 
 }

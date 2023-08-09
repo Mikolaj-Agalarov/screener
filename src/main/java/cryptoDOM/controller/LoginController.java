@@ -41,7 +41,7 @@ public class LoginController {
             final Cookie cookie = new Cookie("Authorization", token);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
-            cookie.setMaxAge((int) Duration.ofHours(3).toSeconds());
+            cookie.setMaxAge((int) Duration.ofDays(7).toSeconds());
 
             final Cookie cookieRole = new Cookie("myRole", user.get().getRole().getRole());
             response.addCookie(cookieRole);
