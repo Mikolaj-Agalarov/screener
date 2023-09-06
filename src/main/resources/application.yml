@@ -3,7 +3,8 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/screener
+    url: jdbc:postgresql://postgres:5432/screener  # Use the service name "postgres" to connect to the database
+
   flyway:
     locations: classpath:db/migration
 
