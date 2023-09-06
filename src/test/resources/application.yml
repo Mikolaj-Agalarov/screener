@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/screener
+    username: postgres
+    password: postgres
+  flyway:
+    baseline-on-migrate: true
+    schemas: public
+server:
+  port: 8087
