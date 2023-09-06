@@ -10,12 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2  # Use version 2 of the checkout action
+        uses: actions/checkout@v2
 
       - name: Set up JDK 19
-        uses: actions/setup-java@v2  # Use version 2 of the setup-java action
+        uses: actions/setup-java@v2
         with:
-          java-version: '19'  # Set the desired Java version to 19
+          java-version:
 
       - name: Build and Test with Maven
         run: mvn -B clean verify
+
+      - name: Complete job
+        run: echo "Job completed successfully"
