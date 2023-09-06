@@ -3,7 +3,7 @@ name: JavaCI
 on:
   push:
     branches:
-      - main
+      - new_tests
 jobs:
   build:
     runs-on: ubuntu-latest
